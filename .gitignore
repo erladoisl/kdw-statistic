@@ -5,3 +5,4 @@ dbapi/__pycache__/
 statistic/__pycache__/
 kdw_statistic/__pycache__/
 statistic/migrations/__pycache__/__init__.cpython-39.pyc
+frontend/node_modules/
