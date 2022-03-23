@@ -1,12 +1,12 @@
 import pandas as pd
 from dbapi.db_connection import conn
-import datetime
-
+import logging
 
 def getOfflineUsers():
     sql_query = ' SELECT id, email, name, surname, lastname, phone, birthday, sector, role, place_of_work, work_position, country, region, city, online, forum_themes, photo, promo, source, accept_policy, subscribe, password, is_blocked, app_role, remember_token, deleted_at, created_at, updated_at, academic_degree, academic_degree_other, pay_order_id, pay_status, locale, is_vip ' +\
         "           FROM public.users                              " +\
         "           where deleted_at is null and online = 'false'; "
+    logging.info(f'DBAPI getOfflineUsers: {sql_query}')
 
     return pd.read_sql(sql_query, conn)
 
@@ -64,6 +64,8 @@ def getTatarstanUsers(offset=0, limit=10):
         "                      city ilike '%Тетюши%')            " +\
         f"        LIMIT {limit} OFFSET {offset}                  "
 
+    logging.info(f'DBAPI getTatarstanUsers: {sql_query}')
+
     return pd.read_sql(sql_query, conn)
 
 
@@ -71,6 +73,9 @@ def getCountrisStatistic():
     sql_query = " SELECT  country, COUNT(*) " +\
         "           FROM public.users       " +\
         "           GROUP BY country;       "
+
+    logging.info(f'DBAPI getCountrisStatistic: {sql_query}')
+
     return pd.read_sql(sql_query, conn)
 
 
@@ -84,8 +89,10 @@ def getTotalRegistrationCount(start_date, end_date):
                 "       sum(case when  role = '2' AND state = 3 AND online = 'false' then 1 else 0 end) AS accepted_speaker_offline" +\
                 " FROM users left join speaker_user_reports on users.id = speaker_user_reports.user_id" +\
                 " WHERE deleted_at IS null AND " +\
-               f"       public.users.created_at > '{start_date} 00:00:01' AND " +\
-               f"	    public.users.created_at <'{end_date} 23:59:59'" 
+        f"       public.users.created_at > '{start_date} 00:00:01' AND " +\
+        f"	    public.users.created_at <'{end_date} 23:59:59'"
+
+    logging.info(f'DBAPI getTotalRegistrationCount: {sql_query}')
 
     return pd.read_sql(sql_query, conn)
 
@@ -103,14 +110,15 @@ def getRegisterationCount(start_date, end_date, page_num=0, limit=10):
                 "       sum(case when  role = '2' AND state = 3 AND online = 'false' then 1 else 0 end) AS accepted_speaker_offline" +\
                 " FROM users left join speaker_user_reports on users.id = speaker_user_reports.user_id" +\
                 " WHERE deleted_at IS null AND " +\
-               f"       public.users.created_at > '{start_date} 00:00:01' AND " +\
-               f"	    public.users.created_at <'{end_date} 23:59:59'" +\
+        f"       public.users.created_at > '{start_date} 00:00:01' AND " +\
+        f"	    public.users.created_at <'{end_date} 23:59:59'" +\
                 " GROUP BY 1" +\
                 " ORDER BY 1 DESC                                                          " +\
-               f" OFFSET {page_num * limit + 1}                                            " +\
-               f" LIMIT {limit}                                                            "
+        f" OFFSET {page_num * limit + 1}                                            " +\
+        f" LIMIT {limit}                                                            "
 
-    print(sql_query)
+    logging.info(f'DBAPI getRegisterationCount: {sql_query}')
+
     return pd.read_sql(sql_query, conn)
 
 
@@ -164,13 +172,14 @@ def getLocationStatistic(start_date, end_date):
 
     sql_query = "SELECT " +\
                 "       COALESCE(sum(case when country not in('россия', 'Россия', 'russia', 'Russia') and not " +\
-               f"		              {tatarstan} then 1 else 0 end), 0) as world, " +\
-               f"	   COALESCE(sum(case when {tatarstan} then 1 else 0 end), 0) as tatarstan, " +\
+        f"		              {tatarstan} then 1 else 0 end), 0) as world, " +\
+        f"	   COALESCE(sum(case when {tatarstan} then 1 else 0 end), 0) as tatarstan, " +\
                 "		COALESCE(sum(case when country in('россия', 'Россия', 'russia', 'Russia')  " +\
-               f"			   and not {tatarstan} then 1 else 0 end), 0) as russia " +\
+        f"			   and not {tatarstan} then 1 else 0 end), 0) as russia " +\
                 "        FROM public.users " +\
                 "        where deleted_at is null and " +\
-               f"        	  created_at > '{start_date} 00:00:01' AND       " +\
-               f"        	  created_at <'{end_date} 23:59:59'"
+        f"        	  created_at > '{start_date} 00:00:01' AND       " +\
+        f"        	  created_at <'{end_date} 23:59:59'"
+    logging.info(f'DBAPI getLocationStatistic: {sql_query}')
 
     return pd.read_sql(sql_query, conn)

@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import logging
+logging.basicConfig(filename='dtp.log', encoding='utf-8', level=logging.INFO)
 
 
 def main():
