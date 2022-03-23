@@ -1,2 +1,0 @@
-# kdw-statistic
-
