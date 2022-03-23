@@ -1,3 +1,5 @@
+import logo from '../../logo.png' // relative path to image 
+
 function Header() {
     return (
         <div>
@@ -6,7 +8,9 @@ function Header() {
                     <div className="d-md-flex">{/* style="justify-content: space-between;">*/}
                         <div className="d-md-flex">
                             <div className="header__left">
-                                <picture><source src="./img/logo.webp" type="image/webp" /><img className="logo" src="./img/logo.png" alt="" /></picture>
+                                <picture>
+                                    <img class="logo" src={logo} alt="" />
+                                </picture>
                             </div>
                             <div className="mx-md-5 my-md-0 my-5">
                                 <h1 className="heading heading_level-1 heading_white index-promo__heading">Международный форум<br /> Kazan Digital Week 2022</h1>
