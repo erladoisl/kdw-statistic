@@ -14,15 +14,15 @@ const Registration = (props) => {
             console.log(result);
             setStatistic(JSON.parse(result.data));
         });
-    }
+    };
 
     useEffect(() => {
-        setPageNum(0)
-        updateStatistic()
+        setPageNum(0);
+        updateStatistic();
     }, [props.startDate, props.endDate]);
 
     useEffect(() => {
-        updateStatistic()
+        updateStatistic();
     }, [pageNum]);
 
 

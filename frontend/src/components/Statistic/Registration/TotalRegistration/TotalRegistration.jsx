@@ -4,7 +4,7 @@ import UsersService from '../../../../service/UsersService';
 const usersService = new UsersService();
 
 const TotalRegistration = (props) => {
-    const [statistic, setStatistic] = useState({ regs: { 0: 0 }, reg_online: { 0: 0 }, reg_offline: { 0: 0 }, speaker: { 0: 0 }, accepted_speaker: { 0: 0 }, accepted_speaker_online: { 0: 0 }, accepted_speaker_offline: { 0: 0 }});
+    const [statistic, setStatistic] = useState({ regs: { 0: 0 }, reg_online: { 0: 0 }, reg_offline: { 0: 0 }, speaker: { 0: 0 }, accepted_speaker: { 0: 0 }, accepted_speaker_online: { 0: 0 }, accepted_speaker_offline: { 0: 0 } });
 
     useEffect(() => {
         usersService.getTotalRegistrationStatistic(props.startDate, props.endDate).then(function (result) {
