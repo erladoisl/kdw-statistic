@@ -1,12 +1,12 @@
 from django.urls import path
-import logging
 from statistic.views import RegistrationCountView
 from statistic.views import TotalRegistrationCountView
 from statistic.views import LocationCountView
-logging.basicConfig(filename='dtp.log', encoding='utf-8', level=logging.DEBUG)
+from statistic.views import MonthsView
 
 urlpatterns = [
-	path(r'api/user/registration', RegistrationCountView.as_view()),
-	path(r'api/user/total/registration', TotalRegistrationCountView.as_view()),
-	path(r'api/user/total/location', LocationCountView.as_view()),
+	path(r'api/statistic/users/registrations/count/in-days/by-period', RegistrationCountView.as_view()),
+	path(r'api/statistic/users/registrations/count/total/by-period', TotalRegistrationCountView.as_view()),
+	path(r'api/statistic/users/registrations/locations/by-period', LocationCountView.as_view()),
+	path(r'api/statistic/users/registrations/count/by-months', MonthsView.as_view()),
 ]

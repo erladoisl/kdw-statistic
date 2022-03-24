@@ -2,6 +2,7 @@ import pandas as pd
 from dbapi.db_connection import conn
 import logging
 
+
 def getOfflineUsers():
     sql_query = ' SELECT id, email, name, surname, lastname, phone, birthday, sector, role, place_of_work, work_position, country, region, city, online, forum_themes, photo, promo, source, accept_policy, subscribe, password, is_blocked, app_role, remember_token, deleted_at, created_at, updated_at, academic_degree, academic_degree_other, pay_order_id, pay_status, locale, is_vip ' +\
         "           FROM public.users                              " +\
@@ -181,5 +182,45 @@ def getLocationStatistic(start_date, end_date):
         f"        	  created_at > '{start_date} 00:00:01' AND       " +\
         f"        	  created_at <'{end_date} 23:59:59'"
     logging.info(f'DBAPI getLocationStatistic: {sql_query}')
+
+    return pd.read_sql(sql_query, conn)
+
+
+def getYearStatistic():
+    sql_query = " SELECT   " +\
+                "        sum(case when to_char(created_at, 'MM') = '01' then 1 else 0 end) as январь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '02' then 1 else 0 end) as февраль, " +\
+                "        sum(case when to_char(created_at, 'MM') = '03' then 1 else 0 end) as март, " +\
+                "        sum(case when to_char(created_at, 'MM') = '04' then 1 else 0 end) as апрель, " +\
+                "        sum(case when to_char(created_at, 'MM') = '05' then 1 else 0 end) as май, " +\
+                "        sum(case when to_char(created_at, 'MM') = '06' then 1 else 0 end) as июнь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '07' then 1 else 0 end) as июль, " +\
+                "        sum(case when to_char(created_at, 'MM') = '08' then 1 else 0 end) as август, " +\
+                "        sum(case when to_char(created_at, 'MM') = '09' then 1 else 0 end) as сентябрь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '10' then 1 else 0 end) as октябрь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '11' then 1 else 0 end) as ноябрь," +\
+                "        sum(case when to_ char(created_at, 'MM') = '12' then 1 else 0 end) as декабрь " +\
+                " FROM  public.users  " +\
+               f" WHERE public.users.created_at > '2021-01-01 00:00:00 ' AND " +\
+               f"      public.users.created_at < '2021-12-31 23:59:59' " +\
+                " UNION  " +\
+                " SELECT   " +\
+                "        sum(case when to_char(created_at, 'MM') = '01' then 1 else 0 end) as  январь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '02' then 1 else 0 end) as  февраль, " +\
+                "        sum(case when to_char(created_at, 'MM') = '03' then 1 else 0 end) as  март, " +\
+                "        sum(case when to_char(created_at, 'MM') = '04' then 1 else 0 end) as  апрель, " +\
+                "        sum(case when to_char(created_at, 'MM') = '05' then 1 else 0 end) as  май, " +\
+                "        sum(case when to_char(created_at, 'MM') = '06' then 1 else 0 end) as  июнь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '07' then 1 else 0 end) as  июль, " +\
+                "        sum(case when to_char(created_at, 'MM') = '08' then 1 else 0 end) as  август, " +\
+                "        sum(case when to_char(created_at, 'MM') = '09' then 1 else 0 end) as  сентябрь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '10' then 1 else 0 end) as  октябрь, " +\
+                "        sum(case when to_char(created_at, 'MM') = '11' then 1 else 0 end) as  ноябрь," +\
+                "        sum(case when to_ char(created_at, 'MM') = '12' then 1 else 0 end) as  декабрь " +\
+                " FROM  public.users  " +\
+               f" WHERE public.users.created_at > '2022-01-01 00:00:00 ' AND " +\
+               f"      public.users.created_at < '2022-12-31 23:59:59' "
+
+    logging.info(f'DBAPI getTwoYearStatistic: {sql_query}')
 
     return pd.read_sql(sql_query, conn)

@@ -2,7 +2,7 @@ from datetime import datetime
 from rest_framework.views import APIView
 from dateutil.relativedelta import relativedelta
 from rest_framework.response import Response
-from dbapi.users import getRegisterationCount, getTotalRegistrationCount, getLocationStatistic
+from dbapi.users import getRegisterationCount, getTotalRegistrationCount, getLocationStatistic, getYearStatistic
 
 
 class RegistrationCountView(APIView):
@@ -36,5 +36,14 @@ class LocationCountView(APIView):
         end_date = request.GET.get('endDate', datetime.now().strftime('%Y-%m-%d'))
 
         data = getLocationStatistic(start_date, end_date)
+
+        return Response({'data': data.to_json()})
+
+
+class MonthsView(APIView):
+    def get(self, request):
+        print('MonthsView GET')
+
+        data = getLocationStatistic()
 
         return Response({'data': data.to_json()})
