@@ -4,6 +4,9 @@ import logging
 
 
 def getOfflineUsers():
+    '''
+        Возвращает список людей, которые будут учавствовать offline
+    '''
     sql_query = ' SELECT id, email, name, surname, lastname, phone, birthday, sector, role, place_of_work, work_position, country, region, city, online, forum_themes, photo, promo, source, accept_policy, subscribe, password, is_blocked, app_role, remember_token, deleted_at, created_at, updated_at, academic_degree, academic_degree_other, pay_order_id, pay_status, locale, is_vip ' +\
         "           FROM public.users                              " +\
         "           where deleted_at is null and online = 'false'; "
@@ -13,6 +16,9 @@ def getOfflineUsers():
 
 
 def getTatarstanUsers(offset=0, limit=10):
+    '''
+        Возвращает список людей, которые из Татарстана
+    '''
     sql_query = ' SELECT id, email, name, surname, lastname, phone, birthday, sector, role, place_of_work, work_position, country, region, city, online, forum_themes, photo, promo, source, accept_policy, subscribe, password, is_blocked, app_role, remember_token, deleted_at, created_at, updated_at, academic_degree, academic_degree_other, pay_order_id, pay_status, locale, is_vip ' +\
         "            FROM public.users                           " +\
         "            where deleted_at is null and                " +\
@@ -70,7 +76,10 @@ def getTatarstanUsers(offset=0, limit=10):
     return pd.read_sql(sql_query, conn)
 
 
-def getCountrisStatistic():
+def getCountryStatistic():
+    '''
+        Возвращает список стран участников
+    '''
     sql_query = " SELECT  country, COUNT(*) " +\
         "           FROM public.users       " +\
         "           GROUP BY country;       "
@@ -81,6 +90,15 @@ def getCountrisStatistic():
 
 
 def getTotalRegistrationCount(start_date, end_date):
+    '''
+        Возвращает за выбранный период количество:
+             1. участников
+             2. участников оffline
+             3. спикеров
+             4. подтвержденных спикеров
+             5. подтвержденных спикеров online
+             6. подтвержденных спикеров offline
+    '''
     sql_query = "SELECT COUNT(*) AS regs, " +\
                 "       sum(case when  online = 'true' then 1 else 0 end) as reg_online," +\
                 "       sum(case when  online = 'false' then 1 else 0 end) as reg_offline," +\
@@ -124,6 +142,12 @@ def getRegisterationCount(start_date, end_date, page_num=0, limit=10):
 
 
 def getLocationStatistic(start_date, end_date):
+    '''
+        Возвращает количество участников из:
+            1. Мира, но не России
+            2. России, но не Татарстана
+            3. Татарстана
+    '''
     tatarstan = " (city ilike '%Агрыз%'  " +\
                 " or city ilike '%Азнакаево%' " +\
                 " or city ilike '%Альметьевск%' " +\
@@ -187,6 +211,12 @@ def getLocationStatistic(start_date, end_date):
 
 
 def getYearStatistic():
+    '''
+        Возвращает количество участников зарегистрированных в каждом месяце за последние два года:
+            1. Мира, но не России
+            2. России, но не Татарстана
+            3. Татарстана
+    '''
     months = "        COALESCE(sum(case when to_char(created_at, 'MM') = '01' then 1 else 0 end), 0) as  январь, " +\
              "        COALESCE(sum(case when to_char(created_at, 'MM') = '02' then 1 else 0 end), 0) as  февраль, " +\
              "        COALESCE(sum(case when to_char(created_at, 'MM') = '03' then 1 else 0 end), 0) as  март, " +\
