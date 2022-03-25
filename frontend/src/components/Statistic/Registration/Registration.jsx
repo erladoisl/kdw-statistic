@@ -11,7 +11,6 @@ const Registration = (props) => {
 
     const updateStatistic = () => {
         usersService.getRegistrationStatistic(props.startDate, props.endDate, pageNum).then(function (result) {
-            console.log(result);
             setStatistic(JSON.parse(result.data));
         });
     };

@@ -8,7 +8,6 @@ const TotalRegistration = (props) => {
 
     useEffect(() => {
         usersService.getTotalRegistrationStatistic(props.startDate, props.endDate).then(function (result) {
-            console.log(`total: ${JSON.parse(result.data)}`);
             setStatistic(JSON.parse(result.data));
         });
     }, [props.startDate, props.endDate]);
