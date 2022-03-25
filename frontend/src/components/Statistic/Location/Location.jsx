@@ -39,7 +39,7 @@ const Location = (props) => {
 
             <div>
                 <div className='row'>
-                    <h2 className=" heading_level-3 mt-5 text-center">Статистика регистраций по местоположению</h2>
+                    <h2 className=" heading_level-3 mt-5">Статистика регистраций по местоположению</h2>
                 </div>
 
                 <div className='row'>
