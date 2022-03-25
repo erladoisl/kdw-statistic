@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 from rest_framework.views import APIView
 from dateutil.relativedelta import relativedelta
 from rest_framework.response import Response
@@ -40,4 +41,4 @@ class MonthsView(APIView):
 
         data = getYearStatistic()
 
-        return Response({'data': data.to_json()})
+        return Response({'data': {'months': data.keys(), '2022': [data[month][0] for month in data.keys()], '2021': [data[month][1] for month in data.keys()]}})

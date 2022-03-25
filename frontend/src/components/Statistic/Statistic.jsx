@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import Location from './Location/Location';
+import MonthStatistic from './MonthStatistic/MonthStatistic';
 
 
 const Statistic = () => {
@@ -49,6 +50,7 @@ const Statistic = () => {
             </div>
             <Registration startDate={startDate.toISOString().slice(0, 10)} endDate={endDate.toISOString().slice(0, 10)} />
             <Location startDate={startDate.toISOString().slice(0, 10)} endDate={endDate.toISOString().slice(0, 10)} />
+            <MonthStatistic />
         </div>
     )
 }
