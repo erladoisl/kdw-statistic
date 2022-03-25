@@ -199,7 +199,7 @@ def getYearStatistic():
                 "        sum(case when to_char(created_at, 'MM') = '09' then 1 else 0 end) as сентябрь, " +\
                 "        sum(case when to_char(created_at, 'MM') = '10' then 1 else 0 end) as октябрь, " +\
                 "        sum(case when to_char(created_at, 'MM') = '11' then 1 else 0 end) as ноябрь," +\
-                "        sum(case when to_ char(created_at, 'MM') = '12' then 1 else 0 end) as декабрь " +\
+                "        sum(case when to_char(created_at, 'MM') = '12' then 1 else 0 end) as декабрь " +\
                 " FROM  public.users  " +\
                f" WHERE public.users.created_at > '2021-01-01 00:00:00 ' AND " +\
                f"      public.users.created_at < '2021-12-31 23:59:59' " +\
@@ -216,7 +216,7 @@ def getYearStatistic():
                 "        sum(case when to_char(created_at, 'MM') = '09' then 1 else 0 end) as  сентябрь, " +\
                 "        sum(case when to_char(created_at, 'MM') = '10' then 1 else 0 end) as  октябрь, " +\
                 "        sum(case when to_char(created_at, 'MM') = '11' then 1 else 0 end) as  ноябрь," +\
-                "        sum(case when to_ char(created_at, 'MM') = '12' then 1 else 0 end) as  декабрь " +\
+                "        sum(case when to_char(created_at, 'MM') = '12' then 1 else 0 end) as  декабрь " +\
                 " FROM  public.users  " +\
                f" WHERE public.users.created_at > '2022-01-01 00:00:00 ' AND " +\
                f"      public.users.created_at < '2022-12-31 23:59:59' "
