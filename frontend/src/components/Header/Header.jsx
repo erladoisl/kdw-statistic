@@ -9,7 +9,7 @@ function Header() {
                         <div className="d-md-flex">
                             <div className="header__left">
                                 <picture>
-                                    <img class="logo" src={logo} alt="" />
+                                    <img className="logo" src={logo} alt="" />
                                 </picture>
                             </div>
                             <div className="mx-md-5 my-md-0 my-5">
