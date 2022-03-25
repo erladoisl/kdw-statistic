@@ -36,11 +36,19 @@ const Location = (props) => {
 
     if (series.reduce((prev, el) => prev + el, 0) > 0)
         return (
-            <div className='row' >
-                <h2 className=" heading_level-3 mt-5 ">Статистика регистраций по местоположению</h2>
-                <ReactApexChart
-                    options={options} series={series} type="pie" width={500}
-                />
+
+            <div>
+                <div className='row'>
+                    <h2 className=" heading_level-3 mt-5 text-center">Статистика регистраций по местоположению</h2>
+                </div>
+
+                <div className='row'>
+                    <div className='col-6 m-auto'>
+                        <ReactApexChart
+                            options={options} series={series} type="pie" width={500}
+                        />
+                    </div>
+                </div>
             </div >
         )
 
