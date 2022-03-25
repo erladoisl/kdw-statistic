@@ -128,6 +128,12 @@ h6 {
   font-size: inherit;
 }
 
+#btn-back-to-top.show {
+  display: block!important;
+}
+#btn-back-to-top.hidde {
+  display: none;
+}
 @font-face {
   font-family: "LetoSans-Bold";
   font-display: swap;

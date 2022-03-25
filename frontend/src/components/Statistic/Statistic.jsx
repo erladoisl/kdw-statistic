@@ -3,7 +3,8 @@ import DatePicker from "react-datepicker";
 import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import Location from './Location/Location';
-import MonthStatistic from './MonthStatistic/MonthStatistic';
+import TwoYearsStatistic from './Registration/TwoYearsStatistic/TwoYearsStatistic';
+import BtnScrollUp from './BtnScrollUpp/BtnScrollUp';
 
 
 const Statistic = () => {
@@ -50,7 +51,8 @@ const Statistic = () => {
             </div>
             <Registration startDate={startDate.toISOString().slice(0, 10)} endDate={endDate.toISOString().slice(0, 10)} />
             <Location startDate={startDate.toISOString().slice(0, 10)} endDate={endDate.toISOString().slice(0, 10)} />
-            <MonthStatistic />
+            <TwoYearsStatistic />
+            <BtnScrollUp />
         </div>
     )
 }
