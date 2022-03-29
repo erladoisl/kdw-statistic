@@ -56,4 +56,17 @@ export default class UsersService {
 			return data;
 		});
 	}
+
+	getTwoYearsStatistic() {
+		let data = [];
+		const url = `${API_URL}/api/statistic/users/registrations/count/two-years`;
+
+		return axios.get(url).then(response => {
+			data = response.data;
+		}).catch(error => {
+			console.log(`error while getting registrations count per month: ${error}`);
+		}).then(() => {
+			return data;
+		});
+	}
 }

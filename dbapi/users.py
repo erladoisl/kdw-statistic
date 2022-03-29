@@ -213,9 +213,7 @@ def getLocationStatistic(start_date, end_date):
 def getYearStatistic():
     '''
         Возвращает количество участников зарегистрированных в каждом месяце за последние два года:
-            1. Мира, но не России
-            2. России, но не Татарстана
-            3. Татарстана
+            в прошлом году и текущем
     '''
     months = "        COALESCE(sum(case when to_char(created_at, 'MM') = '01' then 1 else 0 end), 0) as  январь, " +\
              "        COALESCE(sum(case when to_char(created_at, 'MM') = '02' then 1 else 0 end), 0) as  февраль, " +\
@@ -242,5 +240,43 @@ def getYearStatistic():
                 f"       public.users.created_at < '2022-12-31 23:59:59' "
 
     logging.info(f'DBAPI getTwoYearStatistic: {sql_query}')
+
+    return pd.read_sql(sql_query, conn)
+
+
+def getLastAndCurrentYearStatistic(currentYear: int):
+    '''
+        Возвращает количество участников 
+            1. За предыдущий год
+            2. За предыдущий год спикеров
+            3. За текущий год
+            4. За текущий год спикеров
+    '''
+    sql_query = f"SELECT sum(case when users.created_at >= '{currentYear - 1}-01-01' AND " +\
+		   		f"	                  users.created_at <= '{currentYear - 1}-12-31' then 1 else 0 end) AS last_year_users, " +\
+                f"        sum(case when users.created_at >= '{currentYear - 1}-01-01' AND " +\
+                f"                        users.created_at <= '{currentYear - 1}-12-31' AND " +\
+                f"                        role = '2' AND state = 3 then 1 else 0 end) AS last_year_speacers, " +\
+                f"        sum(case when access_tokens.created_at >= '{currentYear}-01-01' AND " +\
+                f"                        access_tokens.created_at <= '{currentYear}-12-31' AND " +\
+                f"                        users.created_at < '{currentYear}-01-01' OR " +\
+                f"                        users.created_at >= '{currentYear}-01-01' AND " +\
+                f"                        users.created_at <= '{currentYear}-12-31' then 1 else 0 end) AS current_year_users, " +\
+                f"        sum(case when (access_tokens.created_at >= '{currentYear}-01-01' AND " +\
+                f"                        access_tokens.created_at <= '{currentYear}-12-31' AND " +\
+                f"                        users.created_at < '{currentYear}-01-01' OR " +\
+                f"                        users.created_at >= '{currentYear}-01-01' AND " +\
+                f"                        users.created_at <= '{currentYear}-12-31') AND " +\
+                 "                        role = '2' AND state = 3 then 1 else 0 end) AS current_year_speacers " +\
+                 "    FROM users users " +\
+                 "        LEFT JOIN speaker_user_reports reports ON (users.id = reports.user_id) " +\
+                 "        LEFT JOIN oauth_access_tokens access_tokens ON (users.id = access_tokens.user_id) " +\
+                 "    WHERE  deleted_at IS null AND " +\
+                 "        access_tokens.created_at = (SELECT max(oauth_access_tokens.created_at)  " +\
+                 "                                    FROM oauth_access_tokens  " +\
+                 "                                    WHERE oauth_access_tokens.user_id = users.id) " +\
+                 "    OR	access_tokens.created_at is null;"
+
+    logging.info(f'DBAPI getLastAndCurrentYearStatistic: {sql_query}')
 
     return pd.read_sql(sql_query, conn)
