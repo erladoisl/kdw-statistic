@@ -26,7 +26,6 @@ const Registration = (props) => {
         updateStatistic();
     }, [pageNum]);
 
-
     const nextPageHandler = () => {
         setPageNum(pageNum + 1);
     };
@@ -43,6 +42,7 @@ const Registration = (props) => {
                 <h2 className=" heading_level-3 mt-5 ">Загрузка данных...</h2>
             </div>
         )
+
     if (Object.keys(statistic.date).length > 0 || pageNum > 0)
         return (
             <div className="numbers">
