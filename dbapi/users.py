@@ -257,11 +257,11 @@ def getLastAndCurrentYearStatistic(currentYear: int):
     sql_query = f"SELECT sum(case when year = {currentYear - 1} then 1 else 0 end) AS last_year_users, " +\
                 f"       sum(case when year = {currentYear - 1} AND " +\
                 "                      role_id = '2' AND " +\
-                "                      state = 4 then 1 else 0 end) AS last_year_speacers, " +\
+                "                      state = 4 then 1 else 0 end) AS last_year_speakers, " +\
                 f"       sum(case when year = {currentYear} then 1 else 0 end) AS current_year_users, " +\
                 f"       sum(case when year = {currentYear} AND " +\
                 "                      role_id = '2' AND " +\
-                "                      state = 4 then 1 else 0 end) AS current_year_speacers " +\
+                "                      state = 4 then 1 else 0 end) AS current_year_speakers " +\
                 " FROM users users " +\
                 "      LEFT JOIN roles on users.id = roles.user_id " +\
                 " WHERE  deleted_at IS null;"
