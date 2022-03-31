@@ -102,11 +102,11 @@ def getTotalRegistrationCount(start_date, end_date):
     sql_query = "SELECT COUNT(*) AS regs, " +\
                 "       sum(case when  online = 'true' then 1 else 0 end) as reg_online," +\
                 "       sum(case when  online = 'false' then 1 else 0 end) as reg_offline," +\
-                "       sum(case when  role = '2' then 1 else 0 end) as speaker," +\
-                "       sum(case when  role = '2' AND state = 3 then 1 else 0 end) as accepted_speaker," +\
-                "       sum(case when  role = '2' AND state = 3 AND online = 'true' then 1 else 0 end) AS accepted_speaker_online," +\
-                "       sum(case when  role = '2' AND state = 3 AND online = 'false' then 1 else 0 end) AS accepted_speaker_offline" +\
-                " FROM users left join speaker_user_reports on users.id = speaker_user_reports.user_id" +\
+                "       sum(case when  role_id = '2' and year = date_part('year', users.created_at) then 1 else 0 end) as speaker," +\
+                "       sum(case when  role_id = '2' AND state = 4 and year = date_part('year', users.created_at) then 1 else 0 end) as accepted_speaker," +\
+                "       sum(case when  role_id = '2' AND state = 4 and year = date_part('year', users.created_at) AND online = 'true' then 1 else 0 end) AS accepted_speaker_online," +\
+                "       sum(case when  role_id = '2' AND state = 4 and year = date_part('year', users.created_at) AND online = 'false' then 1 else 0 end) AS accepted_speaker_offline" +\
+                " FROM users left join roles on users.id = roles.user_id" +\
                 " WHERE deleted_at IS null AND " +\
         f"       public.users.created_at > '{start_date} 00:00:01' AND " +\
         f"	    public.users.created_at <'{end_date} 23:59:59'"
@@ -275,7 +275,7 @@ def getLastAndCurrentYearStatistic(currentYear: int):
                  "        access_tokens.created_at = (SELECT max(oauth_access_tokens.created_at)  " +\
                  "                                    FROM oauth_access_tokens  " +\
                  "                                    WHERE oauth_access_tokens.user_id = users.id) " +\
-                 "    OR	access_tokens.created_at is null;"
+                 "    OR access_tokens.created_at is null;"
 
     logging.info(f'DBAPI getLastAndCurrentYearStatistic: {sql_query}')
 
