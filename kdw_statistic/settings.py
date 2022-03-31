@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import config as c
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,17 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0%6$lqkm)2^(h0x0z*vwvf%hmev#e4t1n6z!ah$u!0j-#c$2s1'
+SECRET_KEY = c.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-
-ALLOWED_HOSTS = []
-
+DEBUG = c.DEBUG
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,6 +125,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = [
-       'http://localhost:3000',
+CORS_ALLOWED_ORIGINS = [
+    "http://10.146.33.54:3030",
+    "http://localhost:3030",
+    'http://10.146.33.54:3330',
+    'http://10.146.33.54:3331',
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "http://10.146.33.54:3030",
+    "http://localhost:3030",
+    'http://10.146.33.54:3330',
+    'http://10.146.33.54:3331',
+]
+
+ALLOWED_HOSTS = ['10.146.33.54']
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3030',
+    'http://10.146.33.54:3030',
+    'http://10.146.33.54:3330',
+    'http://10.146.33.54:3331',
+]
+
+STATIC_ROOT = 'static/'

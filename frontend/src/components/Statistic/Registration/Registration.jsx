@@ -8,10 +8,12 @@ const usersService = new UsersService();
 const Registration = (props) => {
     const [pageNum, setPageNum] = useState(0);
     const [statistic, setStatistic] = useState({ date: {} });
+    const [loading, setLoading] = useState(true);
 
     const updateStatistic = () => {
         usersService.getRegistrationStatistic(props.startDate, props.endDate, pageNum).then(function (result) {
             setStatistic(JSON.parse(result.data));
+            setLoading(false)
         });
     };
 
@@ -24,7 +26,6 @@ const Registration = (props) => {
         updateStatistic();
     }, [pageNum]);
 
-
     const nextPageHandler = () => {
         setPageNum(pageNum + 1);
     };
@@ -34,6 +35,13 @@ const Registration = (props) => {
             setPageNum(pageNum - 1);
         };
     };
+
+    if (loading)
+        return (
+            <div className="numbers">
+                <h2 className=" heading_level-3 mt-5 ">Загрузка данных...</h2>
+            </div>
+        )
 
     if (Object.keys(statistic.date).length > 0 || pageNum > 0)
         return (

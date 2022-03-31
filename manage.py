@@ -3,7 +3,7 @@
 import os
 import sys
 import logging
-logging.basicConfig(filename='dtp.log', encoding='utf-8', level=logging.INFO)
+logging.basicConfig(filename='dtp.log', level=logging.INFO)
 
 
 def main():
