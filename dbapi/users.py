@@ -254,30 +254,17 @@ def getLastAndCurrentYearStatistic(currentYear: int):
             3. За текущий год
             4. За текущий год спикеров
     '''
-    sql_query = f"SELECT sum(case when users.created_at >= '{currentYear - 1}-01-01' AND " +\
-                f"                     users.created_at <= '{currentYear - 1}-12-31' then 1 else 0 end) AS last_year_users, " +\
-                f"       sum(case when users.created_at >= '{currentYear - 1}-01-01' AND " +\
-                f"                     users.created_at <= '{currentYear - 1}-12-31' AND " +\
-                "                      role = '2' AND state = 3 then 1 else 0 end) AS last_year_speacers, " +\
-                f"       sum(case when access_tokens.created_at >= '{currentYear}-01-01' AND " +\
-                f"                     access_tokens.created_at <= '{currentYear}-12-31' AND " +\
-                f"                     users.created_at < '{currentYear}-01-01' OR " +\
-                f"                     users.created_at >= '{currentYear}-01-01' AND " +\
-                f"                     users.created_at <= '{currentYear}-12-31' then 1 else 0 end) AS current_year_users, " +\
-                f"       sum(case when (access_tokens.created_at >= '{currentYear}-01-01' AND " +\
-                f"                      access_tokens.created_at <= '{currentYear}-12-31' AND " +\
-                f"                      users.created_at < '{currentYear}-01-01' OR " +\
-                f"                      users.created_at >= '{currentYear}-01-01' AND " +\
-                f"                      users.created_at <= '{currentYear}-12-31') AND " +\
-                "        role = '2' AND state = 3 then 1 else 0 end) AS current_year_speacers " +\
+    sql_query = f"SELECT sum(case when year = {currentYear - 1} then 1 else 0 end) AS last_year_users, " +\
+                f"       sum(case when year = {currentYear - 1} AND " +\
+                "                      role_id = '2' AND " +\
+                "                      state = 4 then 1 else 0 end) AS last_year_speacers, " +\
+                f"       sum(case when year = {currentYear} then 1 else 0 end) AS current_year_users, " +\
+                f"       sum(case when year = {currentYear} AND " +\
+                "                      role_id = '2' AND " +\
+                "                      state = 4 then 1 else 0 end) AS current_year_speacers " +\
                 " FROM users users " +\
-                "      LEFT JOIN speaker_user_reports reports ON (users.id = reports.user_id) " +\
-                "      LEFT JOIN oauth_access_tokens access_tokens ON (users.id = access_tokens.user_id) " +\
-                " WHERE  deleted_at IS null AND " +\
-                "        access_tokens.created_at = (SELECT max(oauth_access_tokens.created_at)  " +\
-                "                                    FROM oauth_access_tokens  " +\
-                "                                    WHERE oauth_access_tokens.user_id = users.id) " +\
-                "        OR access_tokens.created_at is null;"
+                "      LEFT JOIN roles on users.id = roles.user_id " +\
+                " WHERE  deleted_at IS null;"
 
     logging.info(f'DBAPI getLastAndCurrentYearStatistic: {sql_query}')
 
