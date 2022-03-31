@@ -123,11 +123,11 @@ def getRegisterationCount(start_date, end_date, page_num=0, limit=10):
     sql_query = "SELECT to_char(public.users.created_at, 'yyyy.mm.dd') as date, COUNT(*) AS regs, " +\
                 "       sum(case when  online = 'true' then 1 else 0 end) as reg_online," +\
                 "       sum(case when  online = 'false' then 1 else 0 end) as reg_offline," +\
-                "       sum(case when  role = '2' then 1 else 0 end) as speaker," +\
-                "       sum(case when  role = '2' AND state = 3 then 1 else 0 end) as accepted_speaker," +\
-                "       sum(case when  role = '2' AND state = 3 AND online = 'true' then 1 else 0 end) AS accepted_speaker_online," +\
-                "       sum(case when  role = '2' AND state = 3 AND online = 'false' then 1 else 0 end) AS accepted_speaker_offline" +\
-                " FROM users left join speaker_user_reports on users.id = speaker_user_reports.user_id" +\
+                "       sum(case when  role_id = '2' AND year = date_part('year', users.created_at) then 1 else 0 end) as speaker," +\
+                "       sum(case when  role_id = '2' AND state = 4 AND year = date_part('year', users.created_at) then 1 else 0 end) as accepted_speaker," +\
+                "       sum(case when  role_id = '2' AND state = 4 AND year = date_part('year', users.created_at) AND online = 'true' then 1 else 0 end) AS accepted_speaker_online," +\
+                "       sum(case when  role_id = '2' AND state = 4 AND year = date_part('year', users.created_at) AND online = 'false' then 1 else 0 end) AS accepted_speaker_offline" +\
+                " FROM users join roles on users.id = roles.user_id" +\
                 " WHERE deleted_at IS null AND " +\
         f"       public.users.created_at > '{start_date} 00:00:01' AND " +\
         f"	    public.users.created_at <'{end_date} 23:59:59'" +\
